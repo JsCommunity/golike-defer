@@ -76,7 +76,7 @@
     ]
   },
   "jest": {
-    "testPathDirs": [
+    "roots": [
       "<rootDir>/dist"
     ]
   },
