@@ -2,16 +2,13 @@ const { push } = Array.prototype
 
 const isPromise = value => value != null && typeof value.then === 'function'
 
-const toDecorator = wrap => (target, key, descriptor) => {
-  if (key === undefined) {
-    return wrap(target)
-  }
-
-  return {
-    ...descriptor,
-    value: wrap(descriptor.value)
-  }
-}
+const toDecorator = wrap => (target, key, descriptor) =>
+  key === undefined
+    ? wrap(target)
+    : {
+      ...descriptor,
+      value: wrap(descriptor.value)
+    }
 
 // -------------------------------------------------------------------
 
