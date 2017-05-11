@@ -20,3 +20,5 @@ example.js.map
 /tests/
 *.spec.js
 *.spec.js.map
+
+__snapshots__/
