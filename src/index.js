@@ -1,6 +1,6 @@
 const { push } = Array.prototype
 
-const isPromise = value => value && typeof value.then === 'function'
+const isPromise = value => value != null && typeof value.then === 'function'
 
 const toDecorator = wrap => (target, key, descriptor) => {
   if (key === undefined) {
@@ -47,7 +47,7 @@ const makeDefer = (onSuccess, onFailure) => fn => function () {
   if (isPromise(result)) {
     const executeAndForward = () => {
       let i = deferreds.length
-      const loop = () => i
+      const loop = () => i > 0
         ? Promise.resolve(deferreds[--i]()).then(loop)
         : result
 
@@ -61,7 +61,7 @@ const makeDefer = (onSuccess, onFailure) => fn => function () {
 
   if (result === errorWrapper ? onFailure : onSuccess) {
     let i = deferreds.length
-    while (i) {
+    while (i > 0) {
       deferreds[--i]()
     }
   }
