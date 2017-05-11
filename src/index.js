@@ -36,7 +36,7 @@ const makeDefer = (onSuccess, onFailure) => fn => function () {
   const deferreds = []
 
   const args = [ deferred => {
-    deferreds && deferreds.push(deferred)
+    deferreds.push(deferred)
   } ]
   push.apply(args, arguments)
   const result = tryCatch(fn, this, args)
