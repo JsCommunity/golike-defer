@@ -77,4 +77,40 @@ describe('defer()', () => {
       expect(i).toBe(0)
     })
   })
+
+  it('should log exceptions from deferreds', () => {
+    const e1 = new Error('e1')
+    const e2 = new Error('e2')
+    const onError = jest.fn()
+    const fn = defer.onError(onError)($defer => {
+      $defer(() => { throw e1 })
+      $defer(() => { throw e2 })
+    })
+
+    fn()
+
+    expect(onError.mock.calls).toEqual([
+      [ e2 ],
+      [ e1 ]
+    ])
+  })
+
+  it('should log exceptions/rejections from deferreds', () => {
+    const e1 = new Error('e1')
+    const e2 = new Error('e2')
+    const onError = jest.fn()
+    const fn = defer.onError(onError)($defer => {
+      $defer(() => { throw e1 })
+      $defer(() => Promise.reject(e2))
+
+      return Promise.resolve()
+    })
+
+    return fn().then(() => {
+      expect(onError.mock.calls).toEqual([
+        [ e2 ],
+        [ e1 ]
+      ])
+    })
+  })
 })

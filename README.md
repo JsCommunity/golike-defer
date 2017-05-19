@@ -66,6 +66,23 @@ There are also two decorators, `defer.onSuccess()` and
 `defer.onFailure()` which run the deferreds only, respectively, in
 case of success or in case of failure.
 
+### On report
+
+Exceptions (or rejected promises) thrown in deferred are caught and
+printed on the console.
+
+This can be customized with the `onError()` method:
+
+```js
+const myDefer = defer.onError(error => {
+  log(error)
+})
+
+const fn = myDefer(($defer, arg1, arg2) => {
+  // ...
+})
+```
+
 ## Development
 
 ```
