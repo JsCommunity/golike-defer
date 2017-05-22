@@ -2,13 +2,17 @@ const { push } = Array.prototype
 
 const isPromise = value => value != null && typeof value.then === 'function'
 
-const toDecorator = wrap => (target, key, descriptor) =>
-  key === undefined
-    ? wrap(target)
-    : {
-      ...descriptor,
-      value: wrap(descriptor.value)
-    }
+const toDecorator = wrap => {
+  const decorator = (target, key, descriptor) =>
+    key === undefined
+      ? wrap(target)
+      : {
+        ...descriptor,
+        value: wrap(descriptor.value)
+      }
+  Object.assign(decorator, wrap)
+  return decorator
+}
 
 // -------------------------------------------------------------------
 
@@ -32,38 +36,56 @@ const tryCatch = (fn, thisArg, args) => {
 
 // ===================================================================
 
-const makeDefer = (onSuccess, onFailure) => fn => function () {
-  const deferreds = []
+const defaultOnError = error => {
+  console.error(error)
+}
 
-  const args = [ deferred => {
-    deferreds.push(deferred)
-  } ]
-  push.apply(args, arguments)
-  const result = tryCatch(fn, this, args)
+const makeDefer = (onSuccess, onFailure) => {
+  const defer = (fn, onError = defaultOnError) => function () {
+    const deferreds = []
 
-  if (isPromise(result)) {
-    const executeAndForward = () => {
+    const args = [ deferred => {
+      deferreds.push(deferred)
+    } ]
+    push.apply(args, arguments)
+    const result = tryCatch(fn, this, args)
+
+    if (isPromise(result)) {
+      const executeAndForward = () => {
+        let i = deferreds.length
+        const loop = () => i > 0
+          ? new Promise(resolve =>
+            resolve(deferreds[--i]())
+          ).then(loop, reportAndLoop)
+          : result
+        const reportAndLoop = error => {
+          onError(error)
+          return loop()
+        }
+
+        return loop()
+      }
+      return result.then(
+        onSuccess && executeAndForward,
+        onFailure && executeAndForward
+      )
+    }
+
+    if (result === errorWrapper ? onFailure : onSuccess) {
       let i = deferreds.length
-      const loop = () => i > 0
-        ? Promise.resolve(deferreds[--i]()).then(loop)
-        : result
-
-      return loop()
+      while (i > 0) {
+        try {
+          deferreds[--i]()
+        } catch (error) {
+          onError(error)
+        }
+      }
     }
-    return result.then(
-      onSuccess && executeAndForward,
-      onFailure && executeAndForward
-    )
-  }
 
-  if (result === errorWrapper ? onFailure : onSuccess) {
-    let i = deferreds.length
-    while (i > 0) {
-      deferreds[--i]()
-    }
+    return forwardResult(result)
   }
-
-  return forwardResult(result)
+  defer.onError = cb => toDecorator(fn => defer(fn, cb))
+  return defer
 }
 
 const defer = toDecorator(makeDefer(true, true))
