@@ -40,12 +40,41 @@ const defaultOnError = error => {
   console.error(error)
 }
 
+function Deferred (fn, thisArg, args) {
+  this.args = args
+  this.fn = fn
+  this.thisArg = thisArg
+}
+Deferred.prototype.run = function () {
+  const { args, fn, thisArg } = this
+  return args === undefined && thisArg === undefined
+    ? fn()
+    : fn.apply(thisArg, args)
+}
+
 const makeDefer = (onSuccess, onFailure) => {
   const defer = (fn, onError = defaultOnError) => function () {
     const deferreds = []
 
-    const args = [ deferred => {
-      deferreds.push(deferred)
+    const args = [ function (deferred) {
+      let argsStart = 1
+      let thisArg, args
+      if (typeof deferred !== 'function') {
+        thisArg = deferred
+        deferred = arguments[argsStart++]
+        if (typeof deferred !== 'function') {
+          deferred = thisArg[deferred]
+        }
+      }
+      const { length } = arguments
+      const nArgs = length - argsStart
+      if (nArgs !== 0) {
+        args = new Array(nArgs)
+        for (let i = 0; i < nArgs; ++i) {
+          args[i] = arguments[i + argsStart]
+        }
+      }
+      deferreds.push(new Deferred(deferred, thisArg, args))
     } ]
     push.apply(args, arguments)
     const result = tryCatch(fn, this, args)
@@ -55,7 +84,7 @@ const makeDefer = (onSuccess, onFailure) => {
         let i = deferreds.length
         const loop = () => i > 0
           ? new Promise(resolve =>
-            resolve(deferreds[--i]())
+            resolve(deferreds[--i].run())
           ).then(loop, reportAndLoop)
           : result
         const reportAndLoop = error => {
@@ -75,7 +104,7 @@ const makeDefer = (onSuccess, onFailure) => {
       let i = deferreds.length
       while (i > 0) {
         try {
-          deferreds[--i]()
+          deferreds[--i].run()
         } catch (error) {
           onError(error)
         }
