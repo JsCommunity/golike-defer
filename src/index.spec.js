@@ -113,4 +113,23 @@ describe('defer()', () => {
       ])
     })
   })
+
+  it('accepts optional context and arguments', () => {
+    const deferred = jest.fn()
+    defer($defer => {
+      $defer('foo', deferred, 'bar', 'baz')
+    })()
+    expect(deferred.mock.instances).toEqual([ 'foo' ])
+    expect(deferred.mock.calls).toEqual([ [ 'bar', 'baz' ] ])
+  })
+
+  it('accepts a context and a method name', () => {
+    const foo = jest.fn()
+    const obj = { foo }
+    defer($defer => {
+      $defer(obj, 'foo', 'bar', 'baz')
+    })()
+    expect(foo.mock.instances).toEqual([ obj ])
+    expect(foo.mock.calls).toEqual([ [ 'bar', 'baz' ] ])
+  })
 })

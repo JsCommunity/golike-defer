@@ -22,6 +22,11 @@ Installation of the [npm package](https://npmjs.org/package/golike-defer):
 
 ## Usage
 
+- `$defer(cb)`: `cb` will be called at the end of the function
+- `$defer(thisArg, cb)`: `cb` will be called with the context `thisArg` (cannot be a function)
+- `$defer(cb, arg1, arg2)`: `cb` will be called with `arg1` and `arg2` arguments
+- `$defer(thisArg, 'method')`: `thisArg.method` will be called at the end of the function
+
 ```js
 import defer from 'golike-defer'
 import fs from 'fs'
@@ -31,7 +36,7 @@ const readFileSync = defer(($defer, path) => {
 
   // The file will be automatically closed at the end of the function,
   // whether it succeed or failed.
-  $defer(() => fs.closeSync(fd))
+  $defer(fs.closeSync, fd)
 
   const { size } = fs.statSync(path)
 
@@ -66,7 +71,7 @@ There are also two decorators, `defer.onSuccess()` and
 `defer.onFailure()` which run the deferreds only, respectively, in
 case of success or in case of failure.
 
-### On report
+### On error
 
 Exceptions (or rejected promises) thrown in deferred are caught and
 printed on the console.
