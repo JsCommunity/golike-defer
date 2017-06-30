@@ -22,9 +22,9 @@ Installation of the [npm package](https://npmjs.org/package/golike-defer):
 
 ## Usage
 
-- `$defer(fn)`: `cb` will be called at the end of the function
-- `$defer(thisArg, fn)`: `cb` will be called with the context `thisArg` (cannot be a function)
-- `$defer(fn, arg1, arg2)`: `cb` will be called with `arg1` and `arg2` arguments
+- `$defer(cb)`: `cb` will be called at the end of the function
+- `$defer(thisArg, cb)`: `cb` will be called with the context `thisArg` (cannot be a function)
+- `$defer(cb, arg1, arg2)`: `cb` will be called with `arg1` and `arg2` arguments
 - `$defer(thisArg, 'method')`: `thisArg.method` will be called at the end of the function
 
 ```js
