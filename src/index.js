@@ -66,8 +66,7 @@ const makeDefer = (onSuccess, onFailure) => {
           deferred = thisArg[deferred]
         }
       }
-      const { length } = arguments
-      const nArgs = length - argsStart
+      const nArgs = arguments.length - argsStart
       if (nArgs !== 0) {
         args = new Array(nArgs)
         for (let i = 0; i < nArgs; ++i) {
