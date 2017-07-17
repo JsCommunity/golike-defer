@@ -57,23 +57,18 @@ const makeDefer = (onSuccess, onFailure) => {
     const deferreds = []
 
     const args = [ function (deferred) {
-      let argsStart = 1
-      let thisArg, args
+      let args
       if (typeof deferred !== 'function') {
-        thisArg = deferred
-        deferred = arguments[argsStart++]
-        if (typeof deferred !== 'function') {
-          deferred = thisArg[deferred]
-        }
+        deferred = this[deferred]
       }
-      const nArgs = arguments.length - argsStart
+      const nArgs = arguments.length - 1
       if (nArgs !== 0) {
         args = new Array(nArgs)
         for (let i = 0; i < nArgs; ++i) {
-          args[i] = arguments[i + argsStart]
+          args[i] = arguments[i + 1]
         }
       }
-      deferreds.push(new Deferred(deferred, thisArg, args))
+      deferreds.push(new Deferred(deferred, this, args))
     } ]
     push.apply(args, arguments)
     const result = tryCatch(fn, this, args)
