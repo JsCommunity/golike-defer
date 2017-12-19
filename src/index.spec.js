@@ -91,7 +91,7 @@ describe('defer()', () => {
 
     expect(onError.mock.calls).toEqual([
       [ e2 ],
-      [ e1 ]
+      [ e1 ],
     ])
   })
 
@@ -109,7 +109,7 @@ describe('defer()', () => {
     return fn().then(() => {
       expect(onError.mock.calls).toEqual([
         [ e2 ],
-        [ e1 ]
+        [ e1 ],
       ])
     })
   })

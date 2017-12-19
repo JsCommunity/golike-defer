@@ -8,7 +8,7 @@ const toDecorator = wrap => {
       ? wrap(target)
       : {
         ...descriptor,
-        value: wrap(descriptor.value)
+        value: wrap(descriptor.value),
       }
   Object.assign(decorator, wrap)
   return decorator
