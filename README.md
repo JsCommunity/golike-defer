@@ -67,8 +67,8 @@ const readFile = defer(async ($defer, path) => {
 })
 ```
 
-There are also two decorators, `defer.onSuccess()` and
-`defer.onFailure()` which run the deferreds only, respectively, in
+There are also two decorators, `$defer.onSuccess()` and
+`$defer.onFailure()` which run the deferreds only, respectively, in
 case of success or in case of failure.
 
 ### On error

@@ -133,3 +133,54 @@ describe('defer()', () => {
     expect(foo.mock.calls).toEqual([ [ 'bar', 'baz' ] ])
   })
 })
+
+describe('lifecycle', () => {
+  let always, failure, fn, success
+  beforeEach(() => {
+    always = jest.fn()
+    failure = jest.fn()
+    success = jest.fn()
+
+    fn = defer(($defer, resultFn) => {
+      $defer(always)
+      $defer.onFailure(failure)
+      $defer.onSuccess(success)
+
+      return resultFn()
+    })
+  })
+
+  it('sync failure', () => {
+    expect(() => fn(() => {
+      throw new Error()
+    })).toThrow()
+
+    expect(always.mock.calls.length).toBe(1)
+    expect(failure.mock.calls.length).toBe(1)
+    expect(success.mock.calls.length).toBe(0)
+  })
+
+  it('sync success', () => {
+    expect(fn(() => 42)).toBe(42)
+
+    expect(always.mock.calls.length).toBe(1)
+    expect(failure.mock.calls.length).toBe(0)
+    expect(success.mock.calls.length).toBe(1)
+  })
+
+  it('async failure', async () => {
+    await expect(fn(() => Promise.reject(new Error()))).rejects.toThrow()
+
+    expect(always.mock.calls.length).toBe(1)
+    expect(failure.mock.calls.length).toBe(1)
+    expect(success.mock.calls.length).toBe(0)
+  })
+
+  it('async success', async () => {
+    expect(await fn(() => Promise.resolve(42))).toBe(42)
+
+    expect(always.mock.calls.length).toBe(1)
+    expect(failure.mock.calls.length).toBe(0)
+    expect(success.mock.calls.length).toBe(1)
+  })
+})
