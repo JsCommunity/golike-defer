@@ -109,6 +109,8 @@ const defer = (fn, onError = defaultOnError) => function () {
   }
   return result
 }
-export { defer as default }
 
-defer.onError = cb => toDecorator(fn => defer(fn, cb))
+const decorator = toDecorator(defer)
+export { decorator as default }
+
+decorator.onError = cb => toDecorator(fn => defer(fn, cb))
