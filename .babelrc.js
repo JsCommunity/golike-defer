@@ -6,7 +6,9 @@ module.exports = {
   comments: !__PROD__,
   compact: __PROD__,
   ignore: __TEST__ ? undefined : [ /\.spec\.js$/ ],
-  plugins: ['lodash'],
+  plugins: [
+    '@babel/plugin-proposal-decorators',
+  ],
   presets: [
     [
       '@babel/env',
