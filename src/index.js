@@ -69,7 +69,7 @@ const defer = (fn, onError = defaultOnError) => function () {
             let then
             return (result != null && typeof (then = result.then) === 'function')
               ? then.call(result, loop, reportAndLoop)
-              : loop(result)
+              : loop()
           } catch (error) {
             return reportAndLoop(error)
           }
