@@ -22,7 +22,7 @@ module.exports = {
             node: '4',
           }
           : { node: 'current' },
-        useBuiltIns: 'usage',
+        useBuiltIns: false,
       },
     ],
   ],
