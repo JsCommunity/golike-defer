@@ -1,6 +1,6 @@
 {
   "name": "golike-defer",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "license": "ISC",
   "description": "go's defer statement in JavaScript",
   "keywords": [
