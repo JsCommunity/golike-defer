@@ -27,15 +27,15 @@ const fn = defer(
   // Works both with sync and async functions
   async function ($defer, ...args) {
     $defer(() => {
-      console.log('always called at the function')
+      console.log('always called at the end of the function')
     })
 
     $defer.onFailure(() => {
-      console.log('called at the function only on failure')
+      console.log('called at the end of the function only on failure')
     })
 
     $defer.onSuccess(() => {
-      console.log('called at the function only on success')
+      console.log('called at the end of the function only on success')
     })
   }
 )
