@@ -22,10 +22,33 @@ Installation of the [npm package](https://npmjs.org/package/golike-defer):
 
 ## Usage
 
-- `$defer(cb)`: `cb` will be called at the end of the function
-- `$defer(cb, arg1, arg2)`: `cb` will be called with `arg1` and `arg2` arguments
-- `$defer.call(thisArg, cb)`: `cb` will be called with the context `thisArg`
-- `$defer.call(thisArg, 'method')`: `thisArg.method` will be called at the end of the function
+```js
+const fn = defer(
+  // Works both with sync and async functions
+  async function ($defer, ...args) {
+    $defer(() => {
+      console.log('always called at the function')
+    })
+
+    $defer.onFailure(() => {
+      console.log('called at the function only on failure')
+    })
+
+    $defer.onSuccess(() => {
+      console.log('called at the function only on success')
+    })
+  }
+)
+```
+
+Context and arguments can be passed to the deferred function:
+
+- `$defer(cb)`: called without context nor arguments
+- `$defer(cb, arg1, arg2)`: called with arguments `arg1` and `arg2`
+- `$defer.call(thisArg, cb)`: called with context `thisArg`
+- `$defer.call(thisArg, 'method')`: `thisArg.method` called with context `thisArg`
+
+## Example
 
 ```js
 import defer from 'golike-defer'
@@ -66,10 +89,6 @@ const readFile = defer(async ($defer, path) => {
   return buffer
 })
 ```
-
-There are also two decorators, `$defer.onSuccess()` and
-`$defer.onFailure()` which run the deferreds only, respectively, in
-case of success or in case of failure.
 
 ### On error
 
