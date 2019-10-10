@@ -1,4 +1,6 @@
-# golike-defer [![Build Status](https://travis-ci.org/JsCommunity/golike-defer.png?branch=master)](https://travis-ci.org/JsCommunity/golike-defer)
+# golike-defer
+
+[![Package Version](https://badgen.net/npm/v/golike-defer)](https://npmjs.org/package/golike-defer) [![Build Status](https://travis-ci.org/JsCommunity/golike-defer.png?branch=master)](https://travis-ci.org/JsCommunity/golike-defer) [![PackagePhobia](https://badgen.net/packagephobia/install/golike-defer)](https://packagephobia.now.sh/result?p=golike-defer) [![Latest Commit](https://badgen.net/github/last-commit/JsCommunity/golike-defer)](https://github.com/JsCommunity/golike-defer/commits/master)
 
 > go's defer statement in JavaScript
 
