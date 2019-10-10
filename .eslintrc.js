@@ -1,15 +1,35 @@
 module.exports = {
   extends: [
-    'standard',
+    // standard configuration
+    "standard",
+
+    // https://github.com/mysticatea/eslint-plugin-node#-rules
+    "plugin:node/recommended",
+
+    // disable rules handled by prettier
+    "prettier",
+    "prettier/standard",
   ],
-  parser: 'babel-eslint',
-  rules: {
-    'comma-dangle': ['error', 'always-multiline'],
-    'no-var': 'error',
-    'node/no-extraneous-import': 'error',
-    'node/no-extraneous-require': 'error',
-    'node/no-missing-require': 'error',
-    'node/no-missing-import': 'error',
-    'prefer-const': 'error',
+
+  parser: "babel-eslint",
+  parserOptions: {
+    sourceType: "module",
   },
-}
+
+  rules: {
+    // prefer let/const over var
+    "no-var": "error",
+
+    // prefer const over let when possible
+    //
+    // should be included in standard: https://github.com/standard/eslint-config-standard/pull/133/
+    "prefer-const": "error",
+
+    // detect incorrect import
+    "node/no-extraneous-import": "error",
+    "node/no-missing-import": "error",
+
+    // uncomment if you are using a builder like Babel
+    "node/no-unsupported-features/es-syntax": "off",
+  },
+};

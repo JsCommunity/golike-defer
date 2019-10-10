@@ -5,7 +5,7 @@
 `defer()` is a function decorator which injects a `$defer()` function
 as a first parameter.
 
-This injected function can be used to register *deferreds*, functions
+This injected function can be used to register _deferreds_, functions
 which will be executed at the end of the decorated function execution,
 no matter how it ended (via a `return` or a `throw`).
 
@@ -25,20 +25,20 @@ Installation of the [npm package](https://npmjs.org/package/golike-defer):
 ```js
 const fn = defer(
   // Works both with sync and async functions
-  async function ($defer, ...args) {
+  async function($defer, ...args) {
     $defer(() => {
-      console.log('always called at the end of the function')
-    })
+      console.log("always called at the end of the function");
+    });
 
     $defer.onFailure(() => {
-      console.log('called at the end of the function only on failure')
-    })
+      console.log("called at the end of the function only on failure");
+    });
 
     $defer.onSuccess(() => {
-      console.log('called at the end of the function only on success')
-    })
+      console.log("called at the end of the function only on success");
+    });
   }
-)
+);
 ```
 
 Context and arguments can be passed to the deferred function:
@@ -99,12 +99,12 @@ This can be customized with the `onError()` method:
 
 ```js
 const myDefer = defer.onError(error => {
-  log(error)
-})
+  log(error);
+});
 
 const fn = myDefer(($defer, arg1, arg2) => {
   // ...
-})
+});
 ```
 
 ## Development
@@ -128,7 +128,7 @@ const fn = myDefer(($defer, arg1, arg2) => {
 
 ## Contributions
 
-Contributions are *very* welcomed, either on the documentation or on
+Contributions are _very_ welcomed, either on the documentation or on
 the code.
 
 You may:

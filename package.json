@@ -29,48 +29,64 @@
   "files": [
     "dist/"
   ],
+  "browserslist": [
+    ">2%"
+  ],
   "engines": {
     "node": ">=4"
   },
   "dependencies": {},
   "devDependencies": {
-    "@babel/cli": "7.0.0-beta.34",
-    "@babel/core": "7.0.0-beta.34",
-    "@babel/plugin-proposal-decorators": "7.0.0-beta.34",
-    "@babel/preset-env": "7.0.0-beta.34",
-    "babel-7-jest": "^21.3.2",
-    "babel-eslint": "^8.0.3",
-    "cross-env": "^5.1.1",
-    "eslint": "^4.13.1",
-    "eslint-config-standard": "^11.0.0-beta.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-node": "^5.2.1",
-    "eslint-plugin-promise": "^3.6.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "husky": "^0.14.3",
-    "jest": "^22.0.3",
-    "rimraf": "^2.6.2"
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-decorators": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "babel-eslint": "^10.0.3",
+    "babel-jest": "^24",
+    "cross-env": "^6.0.3",
+    "eslint": "^6.5.1",
+    "eslint-config-prettier": "^6.4.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "husky": "^3.0.8",
+    "jest": "^24",
+    "lint-staged": "^9.4.2",
+    "prettier": "^1.18.2",
+    "rimraf": "^3.0.0"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production babel --source-maps --out-dir=dist/ src/",
-    "commitmsg": "npm test",
+    "clean": "rimraf dist/",
     "dev": "cross-env NODE_ENV=development babel --watch --source-maps --out-dir=dist/ src/",
     "dev-test": "jest --bail --watch",
-    "prebuild": "rimraf dist/",
-    "predev": "npm run prebuild",
+    "prebuild": "npm run clean",
+    "predev": "npm run clean",
     "prepublishOnly": "npm run build",
-    "pretest": "eslint --ignore-path .gitignore --fix .",
+    "pretest": "eslint --ignore-path .gitignore .",
     "test": "jest"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "jest": {
     "collectCoverage": true,
     "testEnvironment": "node",
-    "transform": {
-      "\\.jsx?$": "babel-7-jest"
-    },
     "roots": [
       "<rootDir>/src"
     ],
     "testRegex": "\\.spec\\.js$"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add",
+      "eslint --ignore-pattern '!*'",
+      "jest --findRelatedTests --passWithNoTests"
+    ]
   }
 }
