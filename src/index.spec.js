@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import defer from "./";
+import { defer } from "./";
 
 // expect(promise).rejects.toThrow does not work with Jest 21
 const makeSyncWrapper = promise =>

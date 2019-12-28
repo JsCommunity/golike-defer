@@ -29,8 +29,8 @@ Deferred.prototype.run = function(when) {
   }
 };
 
-const defer = (fn, onError = defaultOnError) =>
-  function() {
+function defer(fn, onError = defaultOnError) {
+  return function() {
     const deferreds = [];
     const makeAddDeferred = when =>
       function $defer(deferred) {
@@ -111,8 +111,11 @@ const defer = (fn, onError = defaultOnError) =>
     }
     return result;
   };
+}
 
 const decorator = toDecorator(defer);
-export { decorator as default };
-
 decorator.onError = cb => toDecorator(fn => defer(fn, cb));
+export { decorator as defer };
+
+// compatibility with previous versions
+export { decorator as default };

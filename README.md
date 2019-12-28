@@ -27,6 +27,8 @@ Installation of the [npm package](https://npmjs.org/package/golike-defer):
 ## Usage
 
 ```js
+import { defer } from 'golike-defer'
+
 const fn = defer(
   // Works both with sync and async functions
   async function($defer, ...args) {
@@ -55,7 +57,7 @@ Context and arguments can be passed to the deferred function:
 ## Example
 
 ```js
-import defer from 'golike-defer'
+import { defer } from 'golike-defer'
 import fs from 'fs'
 
 const readFileSync = defer(($defer, path) => {
