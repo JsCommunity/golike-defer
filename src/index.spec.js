@@ -220,4 +220,10 @@ describe("lifecycle", () => {
     expect(failure.mock.calls.length).toBe(0);
     expect(success.mock.calls.length).toBe(1);
   });
+
+  it("sets name and length to wrapper function", () => {
+    const wrapper = defer(function foo(a, b, c) {});
+    expect(wrapper.name).toBe("defer(foo)");
+    expect(wrapper.length).toBe(3);
+  });
 });

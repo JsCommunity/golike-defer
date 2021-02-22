@@ -8,6 +8,33 @@ const toDecorator = wrap => (target, key, descriptor) => {
   return descriptor;
 };
 
+const setFnNameAndLength = (() => {
+  const _defineProperties = Object.defineProperties;
+
+  try {
+    const f = _defineProperties(function() {}, {
+      length: { value: 2 },
+      name: { value: "foo" },
+    });
+
+    if (f.length === 2 && f.name === "foo") {
+      return (fn, name, length) =>
+        _defineProperties(fn, {
+          length: {
+            configurable: true,
+            value: length > 0 ? length : 0,
+          },
+          name: {
+            configurable: true,
+            value: name,
+          },
+        });
+    }
+  } catch (_) {}
+
+  return f => f;
+})();
+
 // ===================================================================
 
 const defaultOnError = error => {
@@ -30,7 +57,7 @@ Deferred.prototype.run = function(when) {
 };
 
 function defer(fn, onError = defaultOnError) {
-  return function() {
+  const wrapper = function() {
     const deferreds = [];
     const makeAddDeferred = when =>
       function $defer(deferred) {
@@ -111,6 +138,8 @@ function defer(fn, onError = defaultOnError) {
     }
     return result;
   };
+
+  return setFnNameAndLength(wrapper, `defer(${fn.name})`, fn.length);
 }
 
 const decorator = toDecorator(defer);
