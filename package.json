@@ -1,6 +1,6 @@
 {
   "name": "golike-defer",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "license": "ISC",
   "description": "go's defer statement in JavaScript",
   "keywords": [
@@ -34,7 +34,6 @@
   "engines": {
     "node": ">=4"
   },
-  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
