@@ -139,7 +139,12 @@ function defer(fn, onError = defaultOnError) {
     return result;
   };
 
-  return setFnNameAndLength(wrapper, `defer(${fn.name})`, fn.length);
+  const { length } = fn;
+  return setFnNameAndLength(
+    wrapper,
+    `defer(${fn.name})`,
+    length > 0 ? length - 1 : length
+  );
 }
 
 const decorator = toDecorator(defer);

@@ -222,7 +222,7 @@ describe("lifecycle", () => {
   });
 
   it("sets name and length to wrapper function", () => {
-    const wrapper = defer(function foo(a, b, c) {});
+    const wrapper = defer(function foo($defer, a, b, c) {});
     expect(wrapper.name).toBe("defer(foo)");
     expect(wrapper.length).toBe(3);
   });
