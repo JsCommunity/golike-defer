@@ -140,5 +140,3 @@ export function defer(fn, onError = defaultOnError) {
 }
 
 defer.onError = cb => fn => defer(fn, cb);
-
-export { defer as default };
