@@ -1,13 +1,5 @@
 const { push } = Array.prototype;
 
-const toDecorator = wrap => (target, key, descriptor) => {
-  if (key === undefined) {
-    return wrap(target);
-  }
-  descriptor.value = wrap(descriptor.value);
-  return descriptor;
-};
-
 const setFnNameAndLength = (() => {
   const _defineProperties = Object.defineProperties;
 
@@ -56,7 +48,7 @@ Deferred.prototype.run = function(when) {
   }
 };
 
-function defer(fn, onError = defaultOnError) {
+export function defer(fn, onError = defaultOnError) {
   const wrapper = function() {
     const deferreds = [];
     const makeAddDeferred = when =>
@@ -147,9 +139,6 @@ function defer(fn, onError = defaultOnError) {
   );
 }
 
-const decorator = toDecorator(defer);
-decorator.onError = cb => toDecorator(fn => defer(fn, cb));
-export { decorator as defer };
+defer.onError = cb => fn => defer(fn, cb);
 
-// compatibility with previous versions
-export { decorator as default };
+export { defer as default };

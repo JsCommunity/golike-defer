@@ -7,7 +7,6 @@ const __TEST__ = NODE_ENV === "test";
 module.exports = {
   comments: !__PROD__,
   ignore: __TEST__ ? undefined : [/\.spec\.js$/],
-  plugins: [["@babel/plugin-proposal-decorators", { legacy: true }]],
   presets: [
     [
       "@babel/env",

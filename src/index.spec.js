@@ -171,16 +171,13 @@ describe("lifecycle", () => {
     failure = jest.fn();
     success = jest.fn();
 
-    fn = class {
-      @defer
-      static fn($defer, resultFn) {
-        $defer(always);
-        $defer.onFailure(failure);
-        $defer.onSuccess(success);
+    fn = defer(($defer, resultFn) => {
+      $defer(always);
+      $defer.onFailure(failure);
+      $defer.onSuccess(success);
 
-        return resultFn();
-      }
-    }.fn;
+      return resultFn();
+    });
   });
 
   it("sync failure", () => {
