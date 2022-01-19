@@ -113,25 +113,6 @@ const fn = myDefer(($defer, arg1, arg2) => {
 });
 ```
 
-## Development
-
-```
-# Install dependencies
-> npm
-
-# Run the tests
-> npm test
-
-# Continuously compile
-> npm run dev
-
-# Continuously run the tests
-> npm run dev-test
-
-# Build for production (automatically called by npm install)
-> npm run build
-```
-
 ## Contributions
 
 Contributions are _very_ welcomed, either on the documentation or on
