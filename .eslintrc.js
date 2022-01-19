@@ -11,9 +11,8 @@ module.exports = {
     "prettier/standard",
   ],
 
-  parser: "babel-eslint",
   parserOptions: {
-    sourceType: "module",
+    sourceType: "script",
   },
 
   rules: {
@@ -30,6 +29,6 @@ module.exports = {
     "node/no-missing-import": "error",
 
     // uncomment if you are using a builder like Babel
-    "node/no-unsupported-features/es-syntax": "off",
+    // "node/no-unsupported-features/es-syntax": "off",
   },
 };

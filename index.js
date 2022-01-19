@@ -1,3 +1,5 @@
+"use strict";
+
 const { push } = Array.prototype;
 
 const setFnNameAndLength = (() => {
@@ -48,7 +50,7 @@ Deferred.prototype.run = function(when) {
   }
 };
 
-export function defer(fn, onError = defaultOnError) {
+function defer(fn, onError = defaultOnError) {
   const wrapper = function() {
     const deferreds = [];
     const makeAddDeferred = when =>
@@ -138,5 +140,6 @@ export function defer(fn, onError = defaultOnError) {
     length > 0 ? length - 1 : length
   );
 }
+exports.defer = defer;
 
 defer.onError = cb => fn => defer(fn, cb);

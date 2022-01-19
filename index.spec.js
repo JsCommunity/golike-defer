@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import { defer } from "./";
+const { defer } = require("./");
 
 // expect(promise).rejects.toThrow does not work with Jest 21
 const makeSyncWrapper = promise =>
@@ -200,23 +200,23 @@ describe("lifecycle", () => {
     expect(success.mock.calls.length).toBe(1);
   });
 
-  it("async failure", async () => {
-    expect(
-      await makeSyncWrapper(fn(() => Promise.reject(new Error())))
-    ).toThrow();
+  it("async failure", () =>
+    makeSyncWrapper(fn(() => Promise.reject(new Error()))).then(syncWrapper => {
+      expect(syncWrapper).toThrow();
 
-    expect(always.mock.calls.length).toBe(1);
-    expect(failure.mock.calls.length).toBe(1);
-    expect(success.mock.calls.length).toBe(0);
-  });
+      expect(always.mock.calls.length).toBe(1);
+      expect(failure.mock.calls.length).toBe(1);
+      expect(success.mock.calls.length).toBe(0);
+    }));
 
-  it("async success", async () => {
-    expect(await fn(() => Promise.resolve(42))).toBe(42);
+  it("async success", () =>
+    fn(() => Promise.resolve(42)).then(result => {
+      expect(result).toBe(42);
 
-    expect(always.mock.calls.length).toBe(1);
-    expect(failure.mock.calls.length).toBe(0);
-    expect(success.mock.calls.length).toBe(1);
-  });
+      expect(always.mock.calls.length).toBe(1);
+      expect(failure.mock.calls.length).toBe(0);
+      expect(success.mock.calls.length).toBe(1);
+    }));
 
   it("sets name and length to wrapper function", () => {
     const wrapper = defer(function foo($defer, a, b, c) {});
